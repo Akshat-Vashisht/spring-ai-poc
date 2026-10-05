@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spring-ai
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
+  ai:
+    ollama:
+      chat:
+        model: qwen2.5vl:3b
+    retry:
+      max-attempts: 2          # 1 = no retry at all; 2 = one quick retry
+      backoff:
+        initial-interval: 1s
+        multiplier: 2
+        max-interval: 5s
