@@ -13,7 +13,8 @@ import reactor.core.publisher.Flux;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
-    private final ChatClient chatClient;
+    private final ChatClient chatClientModel;
+    private final ChatClient imageClientModel;
 
     private String requireContent(String content) {
         if (content == null || content.isBlank()) {
@@ -23,12 +24,12 @@ public class ChatService {
     }
 
     public String sendChatMessage(String message) {
-        String content = chatClient.prompt().user(message).call().content();
+        String content = chatClientModel.prompt().user(message).call().content();
         return requireContent(content);
     }
 
     public Flux<String> sendChatMessageStream(String message) {
-        return chatClient.prompt().user(message).stream().content();
+        return chatClientModel.prompt().user(message).stream().content();
     }
 
     public String sendImageMessage(String message, MultipartFile image) {
@@ -37,7 +38,7 @@ public class ChatService {
             throw new InvalidImageException("Invalid image type: " + contentType);
         }
         String content =
-                chatClient.prompt().user(prompt -> prompt.text(message).media(MediaType.parseMediaType(contentType),
+                imageClientModel.prompt().user(prompt -> prompt.text(message).media(MediaType.parseMediaType(contentType),
                         new InputStreamResource(image))).call().content();
 
         return requireContent(content);

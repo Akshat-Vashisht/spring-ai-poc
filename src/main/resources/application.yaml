@@ -3,15 +3,21 @@ spring:
     name: spring-ai
   servlet:
     multipart:
-      max-file-size: 1MB
-      max-request-size: 1MB
+      max-file-size: 40MB
+      max-request-size: 40MB
   ai:
-    ollama:
-      chat:
-        model: qwen2.5vl:3b
+#    ollama:
+#      chat:
+#        model: llama3.2:1b        # This can be used only for a single model setup.
     retry:
-      max-attempts: 2          # 1 = no retry at all; 2 = one quick retry
+      max-attempts: 2
       backoff:
         initial-interval: 1s
         multiplier: 2
         max-interval: 5s
+
+app:
+  ai:
+    model:
+      chat: llama3.2:1b
+      image: qwen2.5vl:3b
